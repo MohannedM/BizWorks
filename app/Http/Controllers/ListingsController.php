@@ -65,6 +65,8 @@ class ListingsController extends Controller
     public function show($id)
     {
         //
+        $listing = Listing::find($id);
+        return view('listings.show')->with('listing', $listing);
     }
 
     /**
@@ -76,6 +78,8 @@ class ListingsController extends Controller
     public function edit($id)
     {
         //
+        $listing = Listing::findOrFail($id);
+        return view('listings.edit')->with('listing', $listing);
     }
 
     /**
@@ -88,6 +92,16 @@ class ListingsController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $listing = Listing::findOrFail($id);
+        $listing->name = $request->input('name');
+        $listing->website = $request->input('website');
+        $listing->email = $request->input('email');
+        $listing->phone = $request->input('phone');
+        $listing->address = $request->input('address');
+        $listing->description = $request->input('description');
+        $listing->is_private = $request->input('is_private');
+        $listing->save();
+        return redirect('/dashboard')->with('success', 'List has been updated.');
     }
 
     /**
@@ -98,6 +112,9 @@ class ListingsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $listing = Listing::findOrFail($id);
+        auth()->user()->listings()->wherePivot('listing_id', '=', $id)->detach();
+        $listing->delete();
+        return redirect('/dashboard')->with('success', 'Business list has been deleted');
     }
 }
