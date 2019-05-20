@@ -9,7 +9,7 @@
             <form action="/listings" method="GET">
                 <div class="form-row">
                     <div class="col-12 col-md-9 mb-2 mb-md-0">
-                        <input type="text" name="name" class="form-control form-control-md" placeholder="Serch for businesses" required>
+                        <input type="text" name="name" class="form-control form-control-md" placeholder="Search for businesses" required>
                     </div>
                     <div class="col-12 col-md-3">
                         <button type="submit" class="btn btn-block btn-md btn-primary">Search!</button>

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="row justify-content-center">
+    <div class="row justify-content-center mb-3">
         <div class="col-md-8">
             <h2>Your Schedule</h2><br>
         </div>

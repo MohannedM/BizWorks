@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+<a href="/dashboard" class="btn btn-light mb-3">Go Back</a>
     <div class="card">
         <div class="card-header">
           {{$listing->name}}
