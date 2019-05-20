@@ -34,7 +34,7 @@
     <div class="form-group">
         <label for="name">Do you want to share business information?</label>
         <br>
-        <input type="radio" name="is_private" value="0" checked> <label for="0">Yes</label>
+        <input type="radio" name="is_private" value="0"> <label for="0">Yes</label>
         <input type="radio" name="is_private" value="1"> <label for="1">No</label>
     </div> 
     <input type="hidden" name="_method" value="PUT">   

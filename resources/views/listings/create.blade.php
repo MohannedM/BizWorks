@@ -4,7 +4,7 @@
 @section('content')
 <h1>Add a Business  <a href="/dashboard" class="btn btn-secondary btn-sm float-right">Go Back</a> </h1>
 <hr>
-<form action="/listings" method="POST" enctype="multipart/form-data">
+<form action="/listings" method="POST">
     {{csrf_field()}}
     
     <div class="form-group">
@@ -28,7 +28,7 @@
         <input type="text" name="address" class="form-control">
     </div>
     <div class="form-group">
-            <label for="address">Business Description: <span class="text-muted">(optional)</span></label>
+            <label for="description">Business Description: <span class="text-muted">(optional)</span></label>
             <textarea name="description" style="resize:none" class="form-control"></textarea>
     </div>    
     <div class="form-group">

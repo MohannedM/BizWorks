@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Todo;
+use App\Listing;
 
 class TodosController extends Controller
 {
@@ -24,6 +26,8 @@ class TodosController extends Controller
     public function create()
     {
         //
+        $listings = auth()->user()->listings;
+        return view('todos.create')->with('listings', $listings);
     }
 
     /**
@@ -35,6 +39,12 @@ class TodosController extends Controller
     public function store(Request $request)
     {
         //
+        $this->validate($request, [
+            'title'=>'required',
+            'due'=>'date'
+        ]);
+        auth()->user()->todos()->create($request->all());
+        return redirect('/dashboard')->with('success', 'Todo has been scheduled');
     }
 
     /**

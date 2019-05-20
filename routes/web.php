@@ -15,8 +15,16 @@ Route::get('/', 'DashboardController@welcome');
 
 Auth::routes();
 
-Route::get('/dashboard', 'DashboardController@index');
-
 Route::resource('/listings', 'ListingsController');
+
+Route::group(['middleware' => ['auth']], function() {
+    Route::get('/dashboard', 'DashboardController@index');
+    
+    Route::get('/listings/{id}/add', 'ListingsController@add');
+    
+    Route::resource('/todos', 'TodosController');
+    
+});
+
 
 

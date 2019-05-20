@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Listing;
+use App\User;
 use Illuminate\Support\Facades\DB;
 
 class ListingsController extends Controller
@@ -64,9 +65,19 @@ class ListingsController extends Controller
      */
     public function show($id)
     {
-        //
         $listing = Listing::find($id);
-        return view('listings.show')->with('listing', $listing);
+        if($this->allowed($id)){
+            return view('listings.show')->with('listing', $listing);
+        }
+        return redirect('/dashboard')->with('error', 'You are not allowed to view this post');
+    }
+    private function allowed($id){
+        foreach(auth()->user()->listings()->get() as $userListing){
+            if($userListing->id == $id){
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -79,7 +90,10 @@ class ListingsController extends Controller
     {
         //
         $listing = Listing::findOrFail($id);
-        return view('listings.edit')->with('listing', $listing);
+        if($this->allowed($id)){
+            return view('listings.edit')->with('listing', $listing);
+        }
+        return redirect('/dashboard')->with('error', 'You are not allowed to edit this post');
     }
 
     /**
@@ -103,6 +117,14 @@ class ListingsController extends Controller
         $listing->save();
         return redirect('/dashboard')->with('success', 'List has been updated.');
     }
+    public function add($id){
+        if($this->allowed($id)){
+            return redirect('/dashboard')->with('error', 'You already have this list');
+        }
+        $listing = Listing::findOrFail($id);
+        auth()->user()->listings()->wherePivot('listing_id', '=', $id)->attach($listing);
+        return redirect('/dashboard')->with('success', 'Business list has been added');
+    }
 
     /**
      * Remove the specified resource from storage.
@@ -114,7 +136,13 @@ class ListingsController extends Controller
     {
         $listing = Listing::findOrFail($id);
         auth()->user()->listings()->wherePivot('listing_id', '=', $id)->detach();
-        $listing->delete();
+        //Check that lsiting doesn't belong to other records and if so delete it
+        $exists = DB::table('listing_user')->where('listing_id', $id)->count() > 0;
+        if(!$exists){
+            $listing->delete();
+        }
+        
+        
         return redirect('/dashboard')->with('success', 'Business list has been deleted');
     }
 }

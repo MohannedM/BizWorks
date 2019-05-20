@@ -23,8 +23,9 @@ class DashboardController extends Controller
      */
     public function index()
     {
+        $todos = auth()->user()->todos()->orderBy('due', 'asc')->get();
         $userListings = auth()->user()->listings()->orderBy('id', 'desc')->get();
-        return view('dashboard')->with('listings', $userListings);
+        return view('dashboard')->with('listings', $userListings)->with('todos', $todos);
     }
     public function welcome(){
         return view('welcome');
